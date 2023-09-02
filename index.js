@@ -35,7 +35,7 @@ const start = async () => {
   }
 };
 setInterval(()=>{
-  fetch('https://chatgpt-virtual-assitant.onrender.com')
+  fetch('https://chatgpt-virtual-assitant.onrender.com/api/v1/g')
   // just to stay active in render.com
 },600000)
 start();
