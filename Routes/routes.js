@@ -57,8 +57,8 @@ const ask = asyncWrapper(async (req,res) => {
   })
 
   const reply = response.data.choices[0].message.content
-  res.json({role: "assistant", content: reply })
- 
+  //res.json({role: "assistant", content: reply })
+  res.json({role: "assistant", content:"your free trail has been expired please renew to continue"})
 
 })
 
