@@ -41,26 +41,34 @@ const deleteCoversation = asyncWrapper(async (req,res) => {
 
 
 
-const ask = asyncWrapper(async (req,res) => {
+const ask = async (req,res) => {
   
   const { conversations } = req.body;
+
+  try {
+    const openAi = new OpenAIApi(
+      new Configuration({
+        apiKey: process.env.API_KEY,
+      })
+    )
   
-  const openAi = new OpenAIApi(
-    new Configuration({
-      apiKey: process.env.API_KEY,
+    const response = await openAi.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: conversations,
     })
-  )
+  
+    const reply = response.data.choices[0].message.content
+    res.json({role: "assistant", content: reply })
+  } catch (error) {
+    if(error.response.status === 429){
+      res.status(429).json({role: "assistant", content: " your free trail has been expired hahahaha"})
+      return
+    }
+    res.json(error)
 
-  const response = await openAi.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: conversations,
-  })
+  }
 
-  const reply = response.data.choices[0].message.content
-  //res.json({role: "assistant", content: reply })
-  res.json({role: "assistant", content:"your free trail has been expired please renew to continue"})
-
-})
+}
 
 const saveConversation = asyncWrapper(async (req,res) => {
   const { conversations } = req.body;
