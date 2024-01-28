@@ -61,7 +61,7 @@ const ask = async (req,res) => {
     res.json({role: "assistant", content: reply })
   } catch (error) {
     if(error.response.status === 429){
-      res.status(429).json({role: "assistant", content: " your free trail has been expired hahahaha"})
+      res.json({role: "assistant", content: " your free trail has been expired hahahaha"})
       return
     }
     res.json(error)
